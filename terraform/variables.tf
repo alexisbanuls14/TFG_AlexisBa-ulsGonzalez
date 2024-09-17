@@ -6,7 +6,7 @@ variable "project_id" {
 variable "region" {
   description = "Región para desplegar el clúster"
   type        = string
-  default     = "us-central1"
+  default     = "europe-west4"
 }
 
 variable "credentials_file" {
