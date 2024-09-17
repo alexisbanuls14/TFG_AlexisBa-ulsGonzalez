@@ -1,9 +1,3 @@
-provider "google" {
-  credentials = file(var.credentials_file)
-  project     = var.project_id
-  region      = var.region
-}
-
 resource "google_container_cluster" "primary" {
   name     = var.cluster_name
   location = var.region
@@ -17,11 +11,6 @@ resource "google_container_cluster" "primary" {
     ]
   }
 
-  autoscaling {
-    min_node_count = var.min_node_count
-    max_node_count = var.max_node_count
-  }
-
   logging_service   = "logging.googleapis.com/kubernetes"
   monitoring_service = "monitoring.googleapis.com/kubernetes"
   
@@ -29,6 +18,9 @@ resource "google_container_cluster" "primary" {
     enable_private_nodes = true
     master_ipv4_cidr_block = "10.0.0.0/28"
   }
+
+  deletion_protection = false
+
 }
 
 resource "google_container_node_pool" "primary_nodes" {
@@ -42,5 +34,10 @@ resource "google_container_node_pool" "primary_nodes" {
       "https://www.googleapis.com/auth/logging.write",
       "https://www.googleapis.com/auth/monitoring",
     ]
+  }
+
+  autoscaling {
+    min_node_count = var.min_node_count
+    max_node_count = var.max_node_count
   }
 }
