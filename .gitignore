@@ -1,0 +1,30 @@
+# Terraform
+.terraform/
+terraform.tfstate
+terraform.tfstate.backup
+.terraform.lock.hcl
+*.tfvars
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+.env
+venv/
+env/
+.pytest_cache/
+.mypy_cache/
+
+# Kubernetes
+*.log
+.kube/
+
+# Logs y otros
+*.log
+*.out
+*.bak
+.DS_Store
+
+# Credenciales y configuraciones
+.env
+credentials.json

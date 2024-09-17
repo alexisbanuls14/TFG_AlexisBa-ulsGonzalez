@@ -2,47 +2,28 @@
 
 ## Descripción
 
-Este proyecto tiene como objetivo desplegar una infraestructura en la nube utilizando Google Cloud, Kubernetes, Terraform, Locust y Envoy Proxy para realizar pruebas de carga en microservicios. El entorno está diseñado para generar y monitorear tráfico distribuido, simulando condiciones de tráfico realista para evaluar la escalabilidad y rendimiento de microservicios en Kubernetes.
+Este proyecto tiene como objetivo desplegar una infraestructura en Google Cloud utilizando Kubernetes, Terraform, Locust y Envoy Proxy para realizar pruebas de carga distribuidas en microservicios. El entorno permite generar tráfico simulado y monitorizar el rendimiento en tiempo real con Prometheus y Grafana.
 
 ## Requisitos Previos
 
-Antes de comenzar, asegúrate de tener instaladas las siguientes herramientas:
+- **[Google Cloud SDK](https://cloud.google.com/sdk/docs/install)**
+- **[Terraform](https://learn.hashicorp.com/tutorials/terraform/install-cli)**
+- **[kubectl](https://kubernetes.io/docs/tasks/tools/)**
+- **[Docker](https://docs.docker.com/get-docker/)** (opcional)
 
-- **[Google Cloud SDK](https://cloud.google.com/sdk/docs/install)**: Para gestionar recursos en Google Cloud.
-- **[Terraform](https://learn.hashicorp.com/tutorials/terraform/install-cli)**: Para el despliegue automatizado de la infraestructura.
-- **[kubectl](https://kubernetes.io/docs/tasks/tools/)**: Para interactuar con el clúster Kubernetes.
-- **[Docker](https://docs.docker.com/get-docker/)** (opcional): Para realizar pruebas locales de contenedores.
+## Instalación y Configuración
 
-## Instrucciones de Instalación
-1. Clonar el repositorio:
-    ```bash
-    git clone https://github.com/tu_usuario/TFG-Cloud-Load-Testing.git
-    cd TFG-Cloud-Load-Testing
-    ```
-
-2. Configurar y desplegar la infraestructura con Terraform:
-    ```bash
-    cd terraform
-    terraform init
-    terraform apply
-    ```
-
-3. Desplegar microservicios en Kubernetes:
-    ```bash
-    cd kubernetes
-    kubectl apply -f deployments/
-    kubectl apply -f services/
-    ```
-
-4. Ejecutar pruebas de carga con Locust:
-    ```bash
-    cd locust
-    locust -f locustfile.py
-    ```
+Para las instrucciones detalladas de instalación y despliegue, consulta [docs/setup.md](docs/setup.md).
 
 ## Arquitectura del Proyecto
-La infraestructura incluye:
-- Un clúster Kubernetes gestionado por GKE.
-- Microservicios balanceados con Envoy Proxy.
-- Pruebas de carga distribuidas con Locust.
-- Monitoreo de tráfico y métricas con Prometheus y Grafana.
+
+La infraestructura del proyecto incluye:
+
+- **Google Kubernetes Engine (GKE)**: Clúster Kubernetes gestionado.
+- **Envoy Proxy**: Balanceo de carga y monitorización de tráfico.
+- **Locust**: Generación de tráfico distribuido para pruebas de carga.
+- **Prometheus y Grafana**: Recolección y visualización de métricas de rendimiento.
+
+## Documentación
+
+Para más detalles sobre los componentes del proyecto, revisa la documentación en el directorio `docs/`.
