@@ -3,7 +3,7 @@
 terraform.tfstate
 terraform.tfstate.backup
 .terraform.lock.hcl
-*.tfvars
+#*.tfvars #MIRA A VER SI TE INTERESA QUITARLO CUANDO SEA DEFINITIVO, EL DIA DE LA PUBLICACION
 .terraform.tfstate.lock.info
 
 # Python
