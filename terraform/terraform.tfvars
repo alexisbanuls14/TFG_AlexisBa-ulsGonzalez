@@ -1,9 +1,7 @@
 project_id       = "tfgalexisbanuls"
-region           = "europe-west4"
 credentials_file = "/home/alexis/Escritorio/datosTFG/tfgalexisbanuls-56fef3179694.json"
+region           = "europe-west4"
 cluster_name     = "mi-cluster-gke"
 machine_type     = "e2-medium"
 min_node_count   = 1
 max_node_count   = 5
-disk_size_gb     = 50
-node_locations   = ["europe-west4-a", "europe-west4-b", "europe-west4-c"]
