@@ -23,6 +23,11 @@ spec:
         imagePullPolicy: Always
         name: worker
         args: ["--worker", "--master-host=locust-master"]
+        resources:
+          requests:
+            cpu: "200m"  # Solicitará al menos 200 millicores de CPU
+          limits:
+            cpu: "500m"  # Usará como máximo 500 millicores de CPU
         volumeMounts:
           - mountPath: /home/locust
             name: locust-scripts

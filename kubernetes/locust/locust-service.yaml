@@ -12,7 +12,7 @@ spec:
     name: master-to-worker-comm    # Comunicación entre el Locust Master y los Workers
   - port: 5558
     name: worker-heartbeat-sync    # Sincronización y latidos de los Workers
--   port: 8089
+  - port: 8089
     targetPort: 8089
     name: locust-web-dashboard     # Interfaz web de Locust para monitorizar las pruebas
   selector:
