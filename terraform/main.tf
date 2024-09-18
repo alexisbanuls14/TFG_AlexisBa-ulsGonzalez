@@ -1,19 +1,9 @@
 resource "google_container_cluster" "primary" {
   name     = var.cluster_name
   location = "europe-west4"
-  initial_node_count = 1
+  initial_node_count = 1  # Solo 1 nodo al inicio en la zona por defecto (europe-west4-a)
 
-  remove_default_node_pool = true
-
-  node_config {
-    machine_type = var.machine_type
-    disk_size_gb = 50
-    disk_type    = "pd-standard"
-    oauth_scopes = [
-      "https://www.googleapis.com/auth/logging.write",
-      "https://www.googleapis.com/auth/monitoring",
-    ]
-  }
+  remove_default_node_pool = true  # No crear el node pool por defecto
 
   logging_service   = "logging.googleapis.com/kubernetes"
   monitoring_service = "monitoring.googleapis.com/kubernetes"
@@ -23,16 +13,15 @@ resource "google_container_cluster" "primary" {
     master_ipv4_cidr_block = "10.0.0.0/28"
   }
 
-  node_locations = ["europe-west4-a", "europe-west4-b", "europe-west4-c"]
-
   deletion_protection = false
-
 }
 
 resource "google_container_node_pool" "primary_nodes" {
   cluster    = google_container_cluster.primary.name
   location   = google_container_cluster.primary.location
-  initial_node_count = 1  # Un solo nodo inicialmente en europe-west4-a
+
+  # Crear un solo nodo inicial
+  initial_node_count = 1  # Un solo nodo inicialmente en la zona europe-west4-a
 
   # Configuración del nodo
   node_config {
@@ -46,10 +35,10 @@ resource "google_container_node_pool" "primary_nodes" {
   }
 
   autoscaling {
-    min_node_count = 1
-    max_node_count = 5
+    min_node_count = 1  # Mínimo 1 nodo
+    max_node_count = 5  # Máximo 5 nodos
   }
 
-  # Zona inicial del primer nodo
-  node_locations = ["europe-west4-a", "europe-west4-b", "europe-west4-c"]  # Escalar en varias zonas
+  # No especificamos zonas aquí para asegurar que solo se cree un nodo en la zona predeterminada
+  # Zonas adicionales se agregarán cuando GKE escale según la demanda
 }
