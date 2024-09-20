@@ -28,4 +28,4 @@ env/
 
 # Credenciales y configuraciones
 .env
-credentials.json
+*.json

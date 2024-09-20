@@ -1,6 +1,6 @@
 resource "google_container_cluster" "primary" {
   name     = var.cluster_name
-  location = "europe-west4"
+  location = var.region
   initial_node_count = 1  # Solo 1 nodo al inicio en la zona por defecto (europe-west4-a)
 
   remove_default_node_pool = true  # No crear el node pool por defecto

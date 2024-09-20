@@ -4,17 +4,14 @@ metadata:
   labels:
     role: locust-master
   name: locust-master
-  namespace: locust-namespace  # Asegúrate de que el namespace sea correcto
+  namespace: locust-namespace
 spec:
-  type: LoadBalancer            # Cambia a LoadBalancer
+  type: LoadBalancer  # Mantén LoadBalancer solo para el puerto web
   ports:
-  - port: 5557
-    name: communication
-  - port: 5558
-    name: communication-plus-1
-  - port: 8089
+  - port: 8089  # Exponer solo el puerto 8089 públicamente
     targetPort: 8089
-    name: web-ui                # Puerto de la interfaz web de Locust
+    name: load-web
   selector:
     role: locust-master
     app: locust-master
+

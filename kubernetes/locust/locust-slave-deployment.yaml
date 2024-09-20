@@ -1,14 +1,13 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  annotations:
-    deployment.kubernetes.io/revision: "1"
   labels:
     role: locust-worker
     app: locust-worker
   name: locust-worker
+  namespace: locust-namespace
 spec:
-  replicas: 6
+  replicas: 3
   selector:
     matchLabels:
       role: locust-worker
@@ -28,7 +27,7 @@ spec:
       - image: locustio/locust
         imagePullPolicy: Always
         name: worker
-        args: ["--worker", "--master-host=locust-master"]
+        args: ["--worker", "--master-host=locust-master-internal"]
         volumeMounts:
           - mountPath: /home/locust
             name: locust-scripts
@@ -43,4 +42,4 @@ spec:
       volumes:
       - name: locust-scripts
         configMap:
-          name: scripts-cm
+          name: locustfile-cm
