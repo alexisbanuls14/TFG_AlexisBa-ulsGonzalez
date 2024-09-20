@@ -7,7 +7,7 @@ metadata:
   name: locust-worker
   namespace: locust-namespace
 spec:
-  replicas: 3
+  replicas: 10
   selector:
     matchLabels:
       role: locust-worker
@@ -31,6 +31,13 @@ spec:
         volumeMounts:
           - mountPath: /home/locust
             name: locust-scripts
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
         resources: {}
         terminationMessagePath: /dev/termination-log
         terminationMessagePolicy: File
