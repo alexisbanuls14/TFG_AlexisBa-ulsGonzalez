@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: locustfile-cm
-  namespace: locust-namespace
+  namespace: load-testing
 data:
   locustfile.py: |
     import time

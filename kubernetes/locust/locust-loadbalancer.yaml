@@ -4,7 +4,7 @@ metadata:
   labels:
     role: locust-master
   name: locust-master
-  namespace: locust-namespace
+  namespace: load-testing
 spec:
   type: LoadBalancer  # Mantén LoadBalancer solo para el puerto web
   ports:

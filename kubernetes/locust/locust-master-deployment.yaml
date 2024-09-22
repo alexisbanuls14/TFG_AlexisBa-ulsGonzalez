@@ -5,7 +5,7 @@ metadata:
     role: locust-master
     app: locust-master
   name: locust-master
-  namespace: locust-namespace
+  namespace: load-testing
 spec:
   replicas: 1
   selector:

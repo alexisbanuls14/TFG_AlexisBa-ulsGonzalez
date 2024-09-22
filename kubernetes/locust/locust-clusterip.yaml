@@ -4,7 +4,7 @@ metadata:
   labels:
     role: locust-master
   name: locust-master-internal  # Servicio interno para comunicación de trabajadores
-  namespace: locust-namespace
+  namespace: load-testing
 spec:
   type: ClusterIP  # Solo accesible dentro del clúster
   ports:
