@@ -8,7 +8,7 @@ spec:
     apiVersion: apps/v1
     kind: Deployment
     name: locust-worker
-  minReplicas: 5  # Número mínimo de workers
+  minReplicas: 10  # Número mínimo de workers
   maxReplicas: 50  # Número máximo de workers
   metrics:
   - type: Resource

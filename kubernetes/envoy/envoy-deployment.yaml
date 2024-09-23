@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: envoy
+  namespace: load-testing
 spec:
   replicas: 1
   selector:
@@ -25,14 +26,3 @@ spec:
       - name: envoy-config
         configMap:
           name: envoy-config
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: envoy
-spec:
-  ports:
-  - port: 80
-    targetPort: 10000
-  selector:
-    app: envoy
