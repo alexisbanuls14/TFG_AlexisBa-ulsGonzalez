@@ -14,6 +14,18 @@ variable "region" {
   default     = "europe-west4"
 }
 
+variable "vpc_name" {
+  description = "Nombre la VPC de GKE"
+  type        = string
+  default     = "vpc-load-testing"
+}
+
+variable "subnet_name" {
+  description = "Nombre de la subred de GKE"
+  type        = string
+  default     = "gke-subnet"
+}
+
 variable "cluster_name" {
   description = "Nombre del clúster de GKE"
   type        = string
@@ -36,4 +48,16 @@ variable "max_node_count" {
   description = "Número máximo de nodos en el clúster"
   type        = number
   default     = 5
+}
+
+variable "nat_router" {
+  description = "Nombre del router NAT"
+  type        = string
+  default     = "nat-router-load-testing"
+}
+
+variable "nat_config" {
+  description = "Nombre de la configuracion del NAT"
+  type        = string
+  default     = "nat-config-load-testing"
 }
