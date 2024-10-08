@@ -7,9 +7,20 @@ data:
   locustfile.py: |
     from locust import HttpUser, task, between
 
-    class UserBehavior(HttpUser):
-        wait_time = between(1, 5)  # Tiempo de espera entre solicitudes
+    class WebsiteUser(HttpUser):
+        # Espera entre 1 y 2 segundos entre las solicitudes
+        wait_time = between(1, 2)
+
+        # Define el host de la página web que quieres testear
+        host = "http://pagina-web.com"
+
+        # Configura el proxy de Envoy
+        proxies = {
+            "http": "http://envoy-service:8080",  # Asegúrate de que este es el puerto de Envoy
+            "https": "http://envoy-service:8080"
+        }
 
         @task
-        def attack_vm(self):
-            self.client.get("/")  # Realiza una solicitud GET a la VM
+        def load_page(self):
+            # Enviar una solicitud GET a la página principal
+            self.client.get("/", proxies=self.proxies)

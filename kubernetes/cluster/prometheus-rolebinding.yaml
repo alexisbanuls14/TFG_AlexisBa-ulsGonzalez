@@ -1,0 +1,13 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: prometheus-rolebinding
+  namespace: locust-testing
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: prometheus-role  # El nombre del Role que creaste anteriormente
+subjects:
+- kind: ServiceAccount
+  name: prometheus  # Debe coincidir con el ServiceAccount de Prometheus
+  namespace: monitoring  # Namespace donde está desplegado Prometheus

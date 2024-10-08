@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: envoy-deployment
+  name: envoy-egress-proxy
   namespace: load-testing
   labels:
     app: envoy
@@ -17,17 +17,18 @@ spec:
     spec:
       containers:
       - name: envoy
-        image: envoyproxy/envoy:v1.17.0
+        image: envoyproxy/envoy:v1.23.0
         ports:
-        - containerPort: 10000 # Puerto donde escuchará el tráfico de los esclavos de Locust
-        - containerPort: 9901  # Puerto de administración de Envoy
+        - containerPort: 8080
         volumeMounts:
         - name: envoy-config
-          mountPath: /etc/envoy
+          mountPath: /etc/envoy/envoy.yaml
+          subPath: envoy.yaml
+          readOnly: true
         args:
-        - "--config-path" # Ejecutar Envoy con el archivo de configuración
+        - "--config-path"
         - "/etc/envoy/envoy.yaml"
       volumes:
       - name: envoy-config
         configMap:
-          name: envoy-config # Este configMap contendrá la configuración de Envoy
+          name: envoy-config

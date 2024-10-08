@@ -1,62 +1,55 @@
-static_resources:
-  listeners:
-  - name: listener_0
-    address:
-      socket_address:
-        address: 0.0.0.0
-        port_value: 10000 # El puerto en el que Envoy escuchará
-    filter_chains:
-    - filters:
-      - name: envoy.filters.network.http_connection_manager
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: envoy-config
+data:
+  envoy.yaml: |
+    static_resources:
+      listeners:
+      - name: listener_http
+        address:
+          socket_address:
+            address: 0.0.0.0
+            port_value: 10000  # Puerto HTTP
+        filter_chains:
+        - filters:
+          - name: envoy.filters.network.http_connection_manager
+            typed_config:
+              "@type": type.googleapis.com/envoy.extensions.filters.network.http_connection_manager.v3.HttpConnectionManager
+              stat_prefix: ingress_http
+              route_config:
+                name: local_route
+                virtual_hosts:
+                - name: backend
+                  domains: ["*"]
+                  routes:
+                  - match:
+                      prefix: "/"
+                    route:
+                      cluster: locust-backend  # Redirige el tráfico al clúster de Locust
+              http_filters:
+              - name: envoy.filters.http.router
+      clusters:
+      - name: locust-backend
+        connect_timeout: 0.25s
+        type: STRICT_DNS
+        lb_policy: ROUND_ROBIN
+        load_assignment:
+          cluster_name: locust-backend
+          endpoints:
+          - lb_endpoints:
+            - endpoint:
+                address:
+                  socket_address:
+                    address: locust-service  # El servicio de Locust
+                    port_value: 8089  # El puerto del Locust master o el servicio
+      transport_socket:
+        name: envoy.transport_sockets.tls
         typed_config:
-          "@type": type.googleapis.com/envoy.extensions.filters.network.http_connection_manager.v3.HttpConnectionManager
-          stat_prefix: forward_http
-          codec_type: AUTO
-          route_config:
-            name: local_route
-            virtual_hosts:
-            - name: forward_proxy_host
-              domains: ["*"] # Acepta cualquier dominio
-              routes:
-              - match:
-                  prefix: "/"
-                route:
-                  cluster: dynamic_forward_proxy_cluster
-          http_filters:
-          - name: envoy.filters.http.router
-  clusters:
-  - name: dynamic_forward_proxy_cluster
-    connect_timeout: 0.25s
-    type: LOGICAL_DNS
-    lb_policy: ROUND_ROBIN
-    typed_extension_protocol_options:
-      envoy.extensions.upstreams.http.v3.HttpProtocolOptions:
-        "@type": type.googleapis.com/envoy.extensions.upstreams.http.v3.HttpProtocolOptions
-    load_assignment:
-      cluster_name: dynamic_forward_proxy_cluster
-      endpoints:
-      - lb_endpoints:
-        - endpoint:
-            address:
-              socket_address:
-                address: "8.8.8.8" # Aquí un destino por defecto (Google DNS), pero será dinámico.
-                port_value: 443
-    transport_socket:
-      name: envoy.transport_sockets.tls
-      typed_config:
-        "@type": type.googleapis.com/envoy.extensions.transport_sockets.tls.v3.UpstreamTlsContext
-
-admin:
-  access_log_path: "/tmp/admin_access.log"
-  address:
-    socket_address:
-      address: 0.0.0.0
-      port_value: 9901
-
-dynamic_resources:
-  cds_config:
-    api_config_source:
-      api_type: GRPC
-      grpc_services:
-      - envoy_grpc:
-          cluster_name: dynamic_forward_proxy_cluster
+          "@type": type.googleapis.com/envoy.extensions.transport_sockets.tls.v3.DownstreamTlsContext
+          common_tls_context:
+            tls_certificates:
+              certificate_chain:
+                filename: "/etc/envoy/certs/fullchain.pem"
+              private_key:
+                filename: "/etc/envoy/certs/privkey.pem"

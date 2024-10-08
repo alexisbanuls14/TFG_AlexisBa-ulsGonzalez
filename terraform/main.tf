@@ -85,3 +85,18 @@ resource "google_compute_router_nat" "nat_config" {
   source_subnetwork_ip_ranges_to_nat = "ALL_SUBNETWORKS_ALL_IP_RANGES"
   min_ports_per_vm = 1024
 }
+
+resource "google_compute_firewall" "allow_http_outbound" {
+  name    = "allow-http-outbound-gke-loadtester"
+  network = google_compute_network.vpc_network.name
+
+  allow {
+    protocol = "tcp"
+    ports    = ["80"]
+  }
+
+  direction = "EGRESS"
+  target_tags = ["gke-nodes"]
+  priority = 1000
+  description = "Permitir tráfico HTTP de salida desde los nodos de GKE"
+}
