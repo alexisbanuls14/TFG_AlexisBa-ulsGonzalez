@@ -1,38 +1,41 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: prometheus-deployment
+  name: prometheus-server
   namespace: monitoring
-  labels:
-    app: prometheus
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: prometheus
+      app: prometheus-server
   template:
     metadata:
       labels:
-        app: prometheus
+        app: prometheus-server
     spec:
-      serviceAccountName: prometheus
+      securityContext:               # Aquí debe ir el fsGroup a nivel de pod
+        fsGroup: 65534
       containers:
-      - name: prometheus
-        image: prom/prometheus:latest
-        args:
-          - "--config.file=/etc/prometheus/prometheus.yml"
-          - "--storage.tsdb.path=/prometheus"
-          - "--web.enable-lifecycle"
-        ports:
-          - containerPort: 9090
-        volumeMounts:
-          - name: prometheus-config-volume
-            mountPath: /etc/prometheus/
-          - name: prometheus-storage-volume
-            mountPath: /prometheus
+        - name: prometheus-server
+          image: "quay.io/prometheus/prometheus:v2.54.1"
+          args:
+            - --config.file=/etc/config/prometheus.yml
+            - --storage.tsdb.path=/data
+            - --web.enable-lifecycle
+          ports:
+            - containerPort: 9090
+          volumeMounts:
+            - name: config-volume
+              mountPath: /etc/config
+            - name: storage-volume
+              mountPath: /data
+          securityContext:
+            runAsUser: 65534    # Prometheus suele usar este UID
+            runAsGroup: 65534   # El grupo de Prometheus
       volumes:
-        - name: prometheus-config-volume
+        - name: config-volume
           configMap:
-            name: prometheus-config
-        - name: prometheus-storage-volume
-          emptyDir: {}
+            name: prometheus-server
+        - name: storage-volume
+          persistentVolumeClaim:
+            claimName: prometheus-server

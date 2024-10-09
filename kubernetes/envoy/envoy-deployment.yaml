@@ -20,6 +20,7 @@ spec:
         image: envoyproxy/envoy:v1.23.0
         ports:
         - containerPort: 8080
+        - containerPort: 9901
         volumeMounts:
         - name: envoy-config
           mountPath: /etc/envoy/envoy.yaml

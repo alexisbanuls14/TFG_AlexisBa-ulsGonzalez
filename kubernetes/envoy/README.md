@@ -11,10 +11,7 @@ kubectl delete configmaps --all -n load-testing
 
 kubectl port-forward deployment/envoy-deployment 9901:9901
 
-
-kubectl delete -f envoy/envoy-configmap.yaml -f envoy/envoy-service.yaml  -f envoy/envoy-deployment.yaml
-
-
+2
 kubectl exec -it test-pod -- /bin/sh
 locust --headless --users 100 --spawn-rate 10 --run-time 10m -f locustfile.py
 
