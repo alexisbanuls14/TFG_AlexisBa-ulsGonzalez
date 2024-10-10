@@ -9,8 +9,8 @@ kubectl exec -it test-pod -- /bin/sh
 kubectl config set-context --current --namespace=monitoring
 kubectl config set-context --current --namespace=load-testing
 
-kubectl delete all --all -n load-testing
-kubectl delete configmaps --all -n load-testing
+kubectl delete all --all -n monitoring
+kubectl delete configmaps --all -n monitoring
 
 kubectl port-forward service/prometheus-server 9090:80 -n monitoring
 
