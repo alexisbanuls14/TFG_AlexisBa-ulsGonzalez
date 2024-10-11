@@ -2,6 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: grafana-dashboard-provisioning
+  namespace: monitoring
 data:
   dashboard.yaml: |
     apiVersion: 1
