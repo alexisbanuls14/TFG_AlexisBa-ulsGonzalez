@@ -17,6 +17,11 @@ resource "google_container_cluster" "primary" {
   # Conectar el clúster a la VPC y subred personalizada
   network    = google_compute_network.vpc_network.id
   subnetwork = google_compute_subnetwork.gke_subnet.id
+  
+  node_config {
+    disk_size_gb = 30
+    disk_type    = "pd-standard"
+  }
 
   # Configurar clúster con IPs privadas
   private_cluster_config {
@@ -40,6 +45,7 @@ resource "google_container_cluster" "primary" {
   }
 
   deletion_protection = false
+  
 }
 
 resource "google_container_node_pool" "primary_nodes" {
@@ -51,8 +57,8 @@ resource "google_container_node_pool" "primary_nodes" {
 
   node_config {
     machine_type = var.machine_type
-    disk_size_gb = 50
-    disk_type    = "pd-standard"
+    disk_size_gb = 30  # Reducir tamaño del disco
+    disk_type    = "pd-standard"  # Confirmar tipo de disco
     oauth_scopes = [
       "https://www.googleapis.com/auth/logging.write",
       "https://www.googleapis.com/auth/monitoring",

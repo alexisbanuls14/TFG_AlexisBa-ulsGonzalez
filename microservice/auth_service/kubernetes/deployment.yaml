@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth-service
+  labels:
+    app: auth-service
+spec:
+  replicas: 2  # Número de réplicas
+  selector:
+    matchLabels:
+      app: auth-service
+  template:
+    metadata:
+      labels:
+        app: auth-service
+    spec:
+      containers:
+      - name: auth-service
+        image: alexisbanuls/auth-service
+        ports:
+        - containerPort: 8000  # Puerto interno expuesto por la aplicación
+        env:
+        - name: DATABASE_URL
+          value: "postgresql+psycopg2://authuser:supersecurepassword@10.215.0.3:5432/authdb"

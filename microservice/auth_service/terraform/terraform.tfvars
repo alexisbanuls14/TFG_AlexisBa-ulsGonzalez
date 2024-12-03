@@ -1,0 +1,12 @@
+project_id       = "mitfgalexisbanuls"
+credentials_file = "C:\\Users\\alexi\\Desktop\\TFG_AlexisBanulsGonzalez\\terraform-service-account-ms.json"
+region           = "europe-west4"
+vpc_name         = "vpc-jwt"
+subnet_name      = "jwt-subnet"
+cluster_name     = "cluster-jwt"
+machine_type     = "e2-medium"
+min_node_count   = 1
+max_node_count   = 5
+nat_router       = "nat-routerjwt"
+nat_config       = "nat-configjwt"
+db_password      = "supersecurepassword"

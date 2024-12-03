@@ -8,13 +8,13 @@ spec:
     apiVersion: apps/v1
     kind: Deployment
     name: locust-worker
-  minReplicas: 10  # Número mínimo de workers
-  maxReplicas: 50  # Número máximo de workers
+  minReplicas: 10
+  maxReplicas: 50
   metrics:
   - type: Resource
     resource:
       name: cpu
       target:
         type: Utilization
-        averageUtilization: 70  # Escala cuando el uso de CPU sea mayor al 70%
+        averageUtilization: 50
 

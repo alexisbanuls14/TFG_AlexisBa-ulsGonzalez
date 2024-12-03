@@ -8,6 +8,6 @@ spec:
     apiVersion: apps/v1
     kind: Deployment
     name: envoy-egress-proxy
-  minReplicas: 3
-  maxReplicas: 15
-  targetCPUUtilizationPercentage: 70
+  minReplicas: 2
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 50

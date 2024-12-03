@@ -16,7 +16,7 @@ data:
 
         # Configura el proxy de Envoy
         proxies = {
-            "http": "http://envoy-service:8080",  # Asegúrate de que este es el puerto de Envoy
+            "http": "http://envoy-service:8080",
             "https": "http://envoy-service:8080"
         }
 

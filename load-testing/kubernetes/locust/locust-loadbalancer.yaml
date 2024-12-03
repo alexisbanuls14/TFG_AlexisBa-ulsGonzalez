@@ -6,9 +6,9 @@ metadata:
   name: locust-master
   namespace: load-testing
 spec:
-  type: LoadBalancer  # Mantén LoadBalancer solo para el puerto web
+  type: LoadBalancer  #para el puerto web
   ports:
-  - port: 8089  # Exponer solo el puerto 8089 públicamente
+  - port: 8089
     targetPort: 8089
     name: load-web
   selector:

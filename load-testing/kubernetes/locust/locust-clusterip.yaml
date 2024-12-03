@@ -6,7 +6,7 @@ metadata:
   name: locust-master-internal  # Servicio interno para comunicación de trabajadores
   namespace: load-testing
 spec:
-  type: ClusterIP  # Solo accesible dentro del clúster
+  type: ClusterIP
   ports:
   - port: 5557  # Comunicación maestro-trabajadores
     targetPort: 5557

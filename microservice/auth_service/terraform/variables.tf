@@ -17,19 +17,19 @@ variable "region" {
 variable "vpc_name" {
   description = "Nombre la VPC de GKE"
   type        = string
-  default     = "vpc-image-processing"
+  default     = "vpc-JWT-authentication"
 }
 
 variable "subnet_name" {
   description = "Nombre de la subred de GKE"
   type        = string
-  default     = "image-processing-subnet"
+  default     = "JWT-authentication-subnet"
 }
 
 variable "cluster_name" {
   description = "Nombre del clúster de GKE"
   type        = string
-  default     = "image-processing-gke"
+  default     = "JWT-authentication-gke"
 }
 
 variable "machine_type" {
@@ -53,11 +53,16 @@ variable "max_node_count" {
 variable "nat_router" {
   description = "Nombre del router NAT"
   type        = string
-  default     = "nat-router-image-processing"
+  default     = "nat-router-JWT-authentication"
 }
 
 variable "nat_config" {
   description = "Nombre de la configuracion del NAT"
   type        = string
-  default     = "nat-config-image-processing"
+  default     = "nat-config-JWT-authentication"
+}
+
+variable "db_password" {
+  description = "Password for the database user"
+  sensitive   = true
 }

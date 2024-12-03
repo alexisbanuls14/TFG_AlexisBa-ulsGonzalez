@@ -26,5 +26,3 @@ data:
         static_configs:
           - targets: ['envoy-service.load-testing.svc.cluster.local:9901']
         metrics_path: /stats/prometheus
- 
- # "job_name: 'prometheus'" para que prometheus scrapee a si mismo, util para monitorear el rendimiento del propio servidor de Prometheus (carga, tiempos de respuesta, uso de recursos, etc.).

@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: factorize-deployment
+  labels:
+    app: factorize-service
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: factorize-service
+  template:
+    metadata:
+      labels:
+        app: factorize-service
+    spec:
+      containers:
+      - name: factorize-service
+        image: alexisbanuls/factorize-service:latest
+        ports:
+        - containerPort: 5000
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+          requests:
+            memory: "64Mi"
+            cpu: "250m"

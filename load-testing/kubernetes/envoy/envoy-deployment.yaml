@@ -6,7 +6,7 @@ metadata:
   labels:
     app: envoy
 spec:
-  replicas: 3
+  replicas: 2
   selector:
     matchLabels:
       app: envoy
@@ -29,13 +29,12 @@ spec:
         args:
         - "--config-path"
         - "/etc/envoy/envoy.yaml"
+        - "-l"
+        - "debug"
         resources:
-          requests:
-            cpu: "200m"
-            memory: "256Mi"
           limits:
-            cpu: "500m"
-            memory: "512Mi"
+            cpu: "55m"
+            memory: "100Mi"
       volumes:
       - name: envoy-config
         configMap:
