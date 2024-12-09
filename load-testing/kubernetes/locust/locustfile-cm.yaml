@@ -6,21 +6,62 @@ metadata:
 data:
   locustfile.py: |
     from locust import HttpUser, task, between
+    import json
 
-    class WebsiteUser(HttpUser):
-        # Espera entre 1 y 2 segundos entre las solicitudes
+    class MixedLoadUser(HttpUser):
+        # Tiempo de espera entre tareas para simular usuarios reales
         wait_time = between(1, 2)
 
-        # Define el host de la página web que quieres testear
-        host = "http://pagina-web.com"
+        # URLs base de los microservicios (actualizarlas según despliegue real)
+        auth_base_url = "http://35.204.238.57:8000"
+        factor_base_url = "http://34.90.39.45:80"
 
-        # Configura el proxy de Envoy
-        proxies = {
-            "http": "http://envoy-service:8080",
-            "https": "http://envoy-service:8080"
-        }
+        # Credenciales de ejemplo para el microservicio de autenticación
+        username = "newuser"
+        password = "newpassword"
 
-        @task
-        def load_page(self):
-            # Enviar una solicitud GET a la página principal
-            self.client.get("/", proxies=self.proxies)
+        # Variable para token (opcional)
+        jwt_token = None
+
+        @task(3)
+        def login_and_get_token(self):
+            # Esta tarea realiza una petición POST a /login para obtener el token JWT
+            payload = {
+                "username": self.username,
+                "password": self.password
+            }
+            with self.client.post(
+                f"{self.auth_base_url}/login", 
+                json=payload,
+                name="auth_login", 
+                catch_response=True
+            ) as response:
+                if response.status_code == 200:
+                    data = response.json()
+                    self.jwt_token = data.get("access_token", None)
+                    if self.jwt_token:
+                        response.success()
+                    else:
+                        response.failure("No se encontró access_token en la respuesta")
+                else:
+                    response.failure(f"Error en login: {response.status_code}")
+
+        @task(1)
+        def factorize_number(self):
+            # En este escenario, el factorizador no requiere autenticación
+            # Por lo tanto, no se envían headers con token
+            large_number = "99999999622227222212111222"  # Ejemplo de número muy grande
+            with self.client.get(
+                f"{self.factor_base_url}/factorize?number={large_number}", 
+                name="factor_factorize", 
+                catch_response=True
+            ) as response:
+                if response.status_code == 200:
+                    data = response.json()
+                    # Se verifica que la respuesta contenga los campos esperados
+                    if "factors" in data and "number" in data:
+                        response.success()
+                    else:
+                        response.failure("Respuesta sin campos esperados: factors o number")
+                else:
+                    response.failure(f"Error en factorize: {response.status_code}")
